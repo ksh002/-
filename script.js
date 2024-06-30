@@ -4,6 +4,8 @@ let inputArea = document.getElementById("input-area")
 let resultArea = document.getElementById("result-area")
 let resetBtn = document.getElementById("reset-button")
 let countArea = document.getElementById("count-area")
+let correct = document.getElementById("correct");
+let correctNumber = document.getElementById("correct-number");
 let count = 5
 let history = []
 let sojuTop = 700
@@ -55,6 +57,8 @@ function play(){
     // 기회를 다 사용하면 버튼 disable
     if (count < 1){
         playBtn.style.display = "none"
+        correct.style.display = "block";
+        correctNumber.textContent = randomNum;
         resultArea.textContent = `내가 이김 한잔하셈ㅋ`
         return;
     }
@@ -79,6 +83,7 @@ function reset(){
     history = []
     sojuTop = 700
     changeSojuCupAfterTop(sojuTop)
+    correct.style.display = "none";
 }
 createRandomNumber()
 
@@ -93,7 +98,7 @@ function start(){
         element.style.opacity = '0';
         element.style.transition = 'opacity 0.2s ease';
     });
-    
+
     setTimeout(() => {
         sojuCup.style.width = '0';
         sojuCup.style.padding = '0';

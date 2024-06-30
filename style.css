@@ -104,6 +104,14 @@ p{
     -webkit-transform: translateX(-98%) translateY(-25%) rotate(45deg);
     transform: translateX(-98%) translateY(-25%) rotate(45deg);
 }
+#correct{
+    margin-bottom:10px;
+    font-size:34px;
+    color:red;
+}
+.correct-number{
+    
+}
 
 #gamestartBtn:hover:after {
     -webkit-transform: translateX(-9%) translateY(-25%) rotate(45deg);
@@ -130,7 +138,7 @@ p{
 .count{
     display:block;
     margin-top:50px;
-    margin-bottom:200px;
+    margin-bottom:150px;
 }
 #result-area{
     margin-bottom:230px;
