@@ -8,9 +8,30 @@
     <script defer src="script.js"></script>
 </head>
 <body>
-    <h1>숫자 맞추기</h1>
-    <div id="result-area">결과</div>
-    <input id="user-input" type="number">
-    <button id="play-button">go</button> 
+    
+    <h1 class="mainTitle">마셔마셔! 먹고XX!</h1>
+    <div class="container">
+        <div class="sojuCup">
+            <div class="inner">
+                <h2>술게임 - 업 앤 다운</h2>
+                <p>게임이 시작하면 1 - 50 사이의 랜덤 숫자가 정해진다.<br> 숫자를 입력했을 때 랜덤 숫자보다 낮으면 업<br> 그보다 높으면 다운이라고 해서 숫자를 맞추는 게임</p>
+                <img class="updownImg" src="images/updown.png" alt="위 아래를 가리키는 화살표 이미지">
+                <div class="btnContainer">
+                    <button id="gamestartBtn"><span>게임시작</span></button>
+                </div>
+            </div>
+        </div>
+        <div class="sojuCup active">
+            <div class="inner">
+                <p class="count" id="count-area">남은 기회 : 5</p>
+                <h2 id="result-area">한잔해!</h2>
+                <div class="inputBox">
+                    <button id="reset-button">찐막</button>
+                    <input id="input-area" type="number">
+                    <button id="play-button">드가자</button>
+                </div>
+            </div>      
+        </div>
+    </div>
 </body> 
 </html>

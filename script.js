@@ -1,33 +1,107 @@
-// 랜덤번호 지정
-// 유저가 번호를 입력한다. 그리고 go 라는 버튼을 누름
-// 만약에 유저가 랜덤번호를 맞추면, 맞췄습니다!
-// 랜덤번호 < 유저번호 Down
-// 랜덤번호 > 유저번호 Up
-// Reset버튼을 누르면 게임이 리셋됨
-// 5번의 기회를 다 쓰면 게임오버 (버튼 disable)
-// 유저가 1 ~ 100 범위 밖에 숫자를 입력하면 알려준다. (기회소모x)
-// 유저가 이미 입력한 숫자를 또 입력하면 알려준다. (기회소모x)
-
 let randomNum = 0
-let playButton = document.getElementById("play-button")
-let userInput = document.getElementById("user-input")
+let playBtn = document.getElementById("play-button")
+let inputArea = document.getElementById("input-area")
 let resultArea = document.getElementById("result-area")
+let resetBtn = document.getElementById("reset-button")
+let countArea = document.getElementById("count-area")
+let count = 5
+let history = []
+let sojuTop = 700
 
-playButton.addEventListener('click',play)
+// 플레이 버튼 이벤트 추가
+playBtn.addEventListener('click', play)
+// 리셋 버튼 이벤트 추가
+resetBtn.addEventListener('click', reset)
 
-function pickRandomNum(){
-    randomNum = Math.floor((Math.random() * 100) + 1)
-    console.log(randomNum)
-}
-function play(){
-    let userValue = userInput.value
-    if(userValue < randomNum){
-        resultArea.textContent = "Up!!!"
-    } else if(userValue > randomNum){
-        resultArea.textContent = "Down!!!"
-    } else{
-        resultArea.textContent = "정답"
+inputArea.addEventListener('focus', function(){inputArea.value=""})
+
+function changeSojuCupAfterTop(topValue) {
+    const styleSheet = document.styleSheets[0];
+    const rules = styleSheet.cssRules || styleSheet.rules;
+    for (let i = 0; i < rules.length; i++) {
+        if (rules[i].selectorText === '.sojuCup.active::after') {
+            rules[i].style.top = `${topValue}px`;
+            break;
+        }
     }
 }
-pickRandomNum()
+
+// 1 ~ 50 사이의 난수 발생 함수
+function createRandomNumber(){
+    randomNum = Math.floor((Math.random() * 100) / 2 + 1)
+}
+
+function play(){
+    let userNum = inputArea.value
+
+
+    // 중복 입력 방지
+    if (history.includes(userNum)){
+        resultArea.textContent = '이미 입력한 숫자임'
+        return
+    }
+    // 지정 외 숫자 입력 방지
+    if (userNum < 1 || userNum > 50){
+        resultArea.textContent = '1 ~ 50 사이의 숫자가 아님'
+        return
+    }
+
+    count--;
+    countArea.textContent = `남은 기회 : ${count}`
+
+    sojuTop -= 140;
+    changeSojuCupAfterTop(sojuTop)
+
+    // 기회를 다 사용하면 버튼 disable
+    if (count < 1){
+        playBtn.style.display = "none"
+        resultArea.textContent = `내가 이김 한잔하셈ㅋ`
+        return;
+    }
+
+    if (userNum < randomNum){
+        resultArea.textContent = `업!`
+    } else if (userNum > randomNum){
+        resultArea.textContent = `다운!`
+    } else{
+        resultArea.textContent = `이걸 맞추네 굿`
+        playBtn.style.display = "none"
+    }
+    history.push(userNum)
+}
+
+function reset(){
+    createRandomNumber()
+    resultArea.textContent = "한잔해!"
+    count = 5;
+    countArea.textContent = `남은 기회 : ${count}`
+    playBtn.style.display = "inline-block"
+    history = []
+    sojuTop = 700
+    changeSojuCupAfterTop(sojuTop)
+}
+createRandomNumber()
+
+let gamestartBtn = document.getElementById("gamestartBtn")
+
+gamestartBtn.addEventListener('click', start)
+
+function start(){
+    const sojuCup = document.querySelector('.sojuCup');
+    const innerElements = sojuCup.querySelectorAll('h2, p, img, div');
+    innerElements.forEach(element => {
+        element.style.opacity = '0';
+        element.style.transition = 'opacity 0.2s ease';
+    });
+    
+    setTimeout(() => {
+        sojuCup.style.width = '0';
+        sojuCup.style.padding = '0';
+        
+        // width와 padding이 0이 된 후 display를 none으로 설정
+        setTimeout(() => {
+            sojuCup.style.display = 'none';
+        }, 400); // 추가 지연 시간을 줌 (0.25초)
+    }, 250); // 첫 번째 지연 시간 (0.25초)
+}
 
