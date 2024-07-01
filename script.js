@@ -6,7 +6,8 @@ let resetBtn = document.getElementById("reset-button")
 let countArea = document.getElementById("count-area")
 let correct = document.getElementById("correct");
 let correctNumber = document.getElementById("correct-number");
-let count = 5
+let count = 3
+let historyArea = document.getElementById("history-area")
 let history = []
 let sojuTop = 700
 
@@ -31,11 +32,11 @@ function changeSojuCupAfterTop(topValue) {
 // 1 ~ 50 사이의 난수 발생 함수
 function createRandomNumber(){
     randomNum = Math.floor((Math.random() * 100) / 2 + 1)
+    correctNumber.textContent = randomNum;
 }
-
 function play(){
-    let userNum = inputArea.value
-
+    let userNum = Number(inputArea.value)
+    correctNumber.textContent = `정답 : ${randomNum}`;
 
     // 중복 입력 방지
     if (history.includes(userNum)){
@@ -45,6 +46,12 @@ function play(){
     // 지정 외 숫자 입력 방지
     if (userNum < 1 || userNum > 50){
         resultArea.textContent = '1 ~ 50 사이의 숫자가 아님'
+        return
+    }
+
+    if (userNum === randomNum){
+        resultArea.textContent = `이걸 맞추네 굿`;
+        playBtn.style.display = "none";
         return
     }
 
@@ -67,23 +74,21 @@ function play(){
         resultArea.textContent = `업!`
     } else if (userNum > randomNum){
         resultArea.textContent = `다운!`
-    } else{
-        resultArea.textContent = `이걸 맞추네 굿`
-        playBtn.style.display = "none"
     }
     history.push(userNum)
+    historyArea.textContent = `입력한 숫자 : ${history}`
 }
 
 function reset(){
     createRandomNumber()
+    correctNumber.textContent = randomNum;
     resultArea.textContent = "한잔해!"
-    count = 5;
+    count = 3;
     countArea.textContent = `남은 기회 : ${count}`
     playBtn.style.display = "inline-block"
     history = []
     sojuTop = 700
     changeSojuCupAfterTop(sojuTop)
-    correct.style.display = "none";
 }
 createRandomNumber()
 
